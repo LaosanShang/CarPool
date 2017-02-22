@@ -21,8 +21,28 @@
             @Html.TextBoxFor(t => t.Phone, new { @class = "mui-input-clear mui-input", @placeholder = "请输入联系电话" })
         </div>
         <div class="mui-content-padded">
-            <button class="mui-btn mui-btn-block mui-btn-primary">注册</button>
+            <a id="btnRegist" class="mui-btn mui-btn-block mui-btn-primary">注册</a>
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnRegist").click(function () {
+            var options = {
+                url: '@Url.Action("Regist","Account")',
+                type: 'post',
+                dataType: 'json',
+                data: $("#regist-form").serialize(),
+                onSuccess: function (data) {
+                    window.location = '@Url.Action("Index","Home")';
+                },
+                onFailure: function (err) {
+                    mui.toast(err);
+                }
+            };
+            $.lsAjax(options);
+        });
+    });
+</script>
 

@@ -1,0 +1,81 @@
+﻿@model CarPool.Models.MessageVModel
+@{
+    ViewBag.Title = Model.MessageType == 0 ? "车主信息" : "乘客信息";
+}
+@if (Model.MessageType == 0)
+{
+    <div id="messageOfCarOwner" class="mui-slider-item mui-control-content mui-active">
+        <form id='login-form' class="mui-input-group" action="@Url.Action("PublishMessage")" method="post">
+            @Html.HiddenFor(t => t.MessageType, new { @value = 0 })
+            <div class="mui-input-row">
+                <label>起点</label>
+                @Html.TextBoxFor(t => t.StartName, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row">
+                <label>目的地</label>
+                @Html.TextBoxFor(t => t.EndName, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row">
+                <label>出发时间</label>
+                @Html.TextBoxFor(t => t.StartTime, new { @class = "mui-input time-picker", @placeholder = "啥时候出发?", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row">
+                <label>价格</label>
+                @Html.TextBoxFor(t => t.Price, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row">
+                <label>座位</label>
+                @Html.TextBoxFor(t => t.SeatCount, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row">
+                <label>联系人</label>
+                @Html.TextBoxFor(t => t.Contact, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row">
+                <label>联系电话</label>
+                @Html.TextBoxFor(t => t.Phone, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row" style="height:auto;">
+                <label>描述</label>
+                @Html.TextAreaFor(t => t.Description, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+        </form>
+    </div>
+}
+else
+{
+    <div id="messageOfPassenger" class="mui-slider-item mui-control-content mui-active">
+        <form class="mui-input-group" action="@Url.Action("PublishMessage")" method="post">
+            @Html.HiddenFor(t => t.MessageType, new { @value = 1 })
+            <div class="mui-input-row">
+                <label>起点</label>
+                @Html.TextBoxFor(t => t.StartName, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row">
+                <label>目的地</label>
+                @Html.TextBoxFor(t => t.EndName, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row">
+                <label>出发时间</label>
+                @Html.TextBoxFor(t => t.StartTime, new { @class = "mui-input time-picker",  @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row">
+                <label>人数</label>
+                @Html.TextBoxFor(t => t.SeatCount, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row">
+                <label>联系人</label>
+                @Html.TextBoxFor(t => t.Contact, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row">
+                <label>联系电话</label>
+                @Html.TextBoxFor(t => t.Phone, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+            <div class="mui-input-row" style="height:auto;">
+                <label>描述</label>
+                @Html.TextAreaFor(t => t.Description, new { @class = "mui-input", @readonly = "readonly" })
+            </div>
+        </form>
+    </div>
+}
+

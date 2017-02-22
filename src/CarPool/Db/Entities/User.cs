@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CarPool.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,5 +20,15 @@ namespace CarPool.Db.Entities
         /// 联系电话
         /// </summary>
         public string Phone { get; set; }
+
+        public UserVModel ToVModel()
+        {
+            return new UserVModel {
+                Id = Id,
+                Name = Name,
+                Phone = Phone,
+                Sex = Sex
+            };
+        }
     }
 }

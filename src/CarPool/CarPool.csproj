@@ -84,6 +84,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.2-beta2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -184,6 +188,12 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery.form.js" />
+    <Content Include="Scripts\jquery.form.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\mui.ls.js" />
     <Content Include="Web.config" />
@@ -191,11 +201,12 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Home\Publish.cshtml" />
     <Content Include="Views\Home\LoadMessage.cshtml" />
-    <Content Include="Views\PartialViews\_MessageList.cshtml" />
+    <Content Include="Views\PartialViews\_messageLi.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Db\CpDbContext.cs" />
     <Compile Include="Db\Entities\BaseEntity.cs" />
@@ -213,7 +224,11 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseVModel.cs" />
+    <Compile Include="Models\Dto\DataGrid.cs" />
+    <Compile Include="Models\Dto\Pager.cs" />
+    <Compile Include="Models\Dto\ResponseDto.cs" />
     <Compile Include="Models\IndexVModel.cs" />
+    <Compile Include="Models\LoginVModel.cs" />
     <Compile Include="Models\MessageVModel.cs" />
     <Compile Include="Models\UserVModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -233,6 +248,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Scripts\jquery.form.min.js.map" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Home\MessageDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -242,6 +260,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Auth\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201702151406012_InitialCreate.resx">

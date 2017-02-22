@@ -1,7 +1,40 @@
 ﻿@model CarPool.Models.IndexVModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "首页";
 }
+<style type="text/css">
+    .mui-slider .mui-slider-group .mui-slider-item img {
+        max-height: 180px;
+    }
+
+    .mui-control-content {
+        background-color: white;
+        min-height: 350px;
+    }
+
+        .mui-control-content .mui-loading {
+            margin-top: 50px;
+        }
+
+    .mui-table-view-cell span {
+        float: left;
+        line-height: 2em;
+    }
+
+    .mui-table-view-cell .route {
+        color: #333;
+        font-size: 1.3em;
+        font-weight: bold;
+    }
+
+    .mui-table-view-cell .price {
+        color: #FF6103;
+        font-weight: bold;
+        margin-right: 20px;
+        font-size: 1.2em;
+    }
+</style>
+<!--轮播图-->
 <div id="slider" class="mui-slider">
     <div class="mui-slider-group mui-slider-loop">
         <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
@@ -42,105 +75,121 @@
         <div class="mui-indicator"></div>
     </div>
 </div>
+<!--搜索框-->
 <div class="mui-content-padded" style="margin-top: 5px;margin-bottom:-15px;">
     <div class="mui-input-row mui-search">
         <input type="search" class="mui-input-clear" placeholder="搜索拼车">
     </div>
 </div>
+<!--列表-->
+<div id="tabList" class="mui-slider">
+    <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+        <a class="mui-control-item" href="#messageOfCarOwner">
+            找车主
+        </a>
+        <a class="mui-control-item" href="#messageOfPassenger">
+            找乘客
+        </a>
+    </div>
+    <div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
+    <div class="mui-slider-group">
+        <div id="messageOfCarOwner" class="mui-slider-item mui-control-content  mui-active">
+            <div id="scroll_MsgOfCarOwner" class="mui-scroll-wrapper">
+                <div class="mui-scroll">
+                    <ul id="msgCarOwner" class="mui-table-view"></ul>
+                </div>
+            </div>
+        </div>
+        <div id="messageOfPassenger" class="mui-slider-item mui-control-content">
+            <div id="scroll_MsgOfPassenger" class="mui-scroll-wrapper">
+                <div class="mui-scroll">
+                    <ul id="msgOfPassenger" class="mui-table-view"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Content/mui/js/mui.js"></script>
+<script src="~/Content/mui/js/mui.pullToRefresh.js"></script>
+<script src="~/Content/mui/js/mui.pullToRefresh.material.js"></script>
 
-<div style="padding: 10px 10px;">
-    <div id="segmentedControl" class="mui-segmented-control">
-        <div class="mui-scroll" style="height:50px;">
-            <a class="mui-control-item mui-active" href="#item1">找车主</a>
-            <a class="mui-control-item" href="#item2">找乘客</a>
-        </div>
-    </div>
-</div>
-<div id="item1" class="mui-control-content mui-active">
-    <div id="scroll1" class="mui-scroll-wrapper">
-        <div class="mui-scroll">
-            <ul id="msgOfPassenger" class="mui-table-view"></ul>
-        </div>
-    </div>
-</div>
-<div id="item2" class="mui-control-content">
-    <ul class="mui-table-view">
-        @foreach (var msg in Model.CarMessages)
-            {
-            <li class="mui-table-view-cell">
-                <a class="mui-navigate-right">
-                    <p>@msg.StartName - @msg.EndName</p>
-                    <p>费用:@msg.Price 元</p>
-                    <p>出发时间：@msg.StartTime</p>
-                </a>
-            </li>
-        }
-    </ul>
-</div>
-<div id="item3" class="mui-control-content">
-    <ul class="mui-table-view">
-        <li class="mui-table-view-cell">
-            第三个选项卡子项-1
-        </li>
-        <li class="mui-table-view-cell">
-            第三个选项卡子项-2
-        </li>
-        <li class="mui-table-view-cell">
-            第三个选项卡子项-3
-        </li>
-    </ul>
-</div>
 <script type="text/javascript" charset="utf-8">
-    var page = {
-        slider: mui("#slider"),
-        pager: {
-            pageNo: 1,//页数
-            rows: 5,//每页行数
-        },
-        refresh: function () {
-            $.ajax({
-                type: 'post',
-                url: '@Url.Action("LoadMessage")', //+ '?page=' + page.pager.pageNo + '&rows=' + page.pager.rows,
-                data: { page: page.pager.pageNo, rows: page.pager.rows },
-                success: function (data) {
-                    $("#msgOfPassenger").append(data);
-                    page.pager.pageNo++;
-                }
-            });
-        }
-    };
-    $.ready(function () {
-        mui.init({
-            swipeBack: true,//启用右滑关闭功能
-            //pullRefresh: {
-            //    container: '#content',//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
-            //    up: {
-            //        height: 50,//可选.默认50.触发上拉加载拖动距离
-            //        auto: true,//可选,默认false.自动上拉加载一次
-            //        contentrefresh: "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
-            //        contentnomore: '没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
-            //        callback: function () {
-            //            page.refresh();
-            //        }
-            //    }
-            //}
+    (function (mui, $) {
+        var page = {
+            slider: mui("#slider"),
+            pagerOfCarOwnerList: {
+                pageNo: 1,//页数
+                rows: 5,//每页行数
+            },
+            pagerOfPassengerList: {
+                pageNo: 1,//页数
+                rows: 5,//每页行数
+            }
+        };
+        //滚动条
+        mui('.mui-scroll-wrapper').scroll({
+            indicators: true
         });
-        //$('#msgOfPassenger').pullRefresh();
-        $('.mui-scroll-wrapper').scroll({
-            bounce: false,
-            indicators: true, //是否显示滚动条
-            deceleration: deceleration
-        });
-    });
+        //初始化
+        mui('#scroll_MsgOfCarOwner').pullRefresh({
+            down: {
 
-    //图片滚动
-    page.slider.slider({
-        interval: 5000
-    });
-    //列表滚动条
-    mui('.mui-scroll-wrapper').scroll({
-        deceleration: 0.0005
-    });
-    //$("#item1 .mui-table-view").load('@Url.Action("LoadMessage")' + '?page=1&rows=5');
+            },
+            up: {
+                height: 50,
+                auto: true,
+                contentrefresh: "正在加载...",
+                contentnomore: '没有更多数据了',
+                callback: function () {
+                    var self = this;
+                    $.ajax({
+                        type: 'post',
+                        url: '@Url.Action("LoadMessage")',
+                        data: { page: page.pagerOfCarOwnerList.pageNo, rows: page.pagerOfCarOwnerList.rows, msgType: 0 },
+                        success: function (data) {
+                            $('#msgCarOwner').append(data);
+                            page.pagerOfCarOwnerList.pageNo++;
+                            self.endPullupToRefresh(data == '');
+                        }
+                    });
+                }
+            }
+        });
+        //初始化下拉刷新
+        mui('#scroll_MsgOfPassenger').pullRefresh({
+            down: {
+
+            },
+            up: {
+                height: 50,
+                auto: true,
+                contentrefresh: "正在加载...",
+                contentnomore: '没有更多数据了',
+                callback: function () {
+                    var self = this;
+                    $.ajax({
+                        type: 'post',
+                        url: '@Url.Action("LoadMessage")',
+                        data: { page: page.pagerOfPassengerList.pageNo, rows: page.pagerOfPassengerList.rows, msgType: 1 },
+                        success: function (data) {
+                            $('#msgOfPassenger').append(data);
+                            page.pagerOfPassengerList.pageNo++;
+                            self.endPullupToRefresh(data == '');
+                        }
+                    });
+                }
+            }
+        });
+        //图片滚动
+        page.slider.slider({
+            interval: 5000
+        });
+
+        //列表点击事件绑定
+        mui(".mui-table-view").on('tap', '.mui-table-view-cell', function () {
+            var id = this.getAttribute("msgId");
+            window.location = '@Url.Action("MessageDetail","Home")' + '?id=' + id;
+        })
+    })(mui, $);
 
 </script>

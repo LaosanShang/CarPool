@@ -1,6 +1,6 @@
-﻿@model CarPool.Models.UserVModel
+﻿@model CarPool.Models.LoginVModel
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "登录";
 }
 <div class="mui-content">
     <form id='login-form' class="mui-input-group" action="@Url.Action("CheckLogin")" method="post">
@@ -9,8 +9,28 @@
             @Html.TextBoxFor(t=>t.Phone,new{@class = "mui-input-clear mui-input",@placeholder = "请输入联系电话" })
         </div>
         <div class="mui-content-padded">
-            <button id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</button>
+            <a id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</a>
         </div>
     </form>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#login").click(function () {
+                var options = {
+                    url: '@Url.Action("CheckLogin")',
+                    type: 'post',
+                    dataType: 'json',
+                    data: $("#login-form").serialize(),
+                    onSuccess: function (data) {
+                        window.location = '@Url.Action("Index","Home")';
+                    },
+                    onFailure: function (err) {
+                        mui.toast(err);
+                    }
+                };
+                $.lsAjax(options);
+            });
+        });
+    </script>
 </div>
 

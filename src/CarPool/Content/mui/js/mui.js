@@ -5098,7 +5098,8 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
             _endPulldownToRefresh: function() { //该方法是父页面调用的
                 var self = this;
                 if (self.topPocket && self.options.webview) {
-                    self.options.webview.endPullToRefresh(); //下拉刷新所在webview回弹
+                    self.options.webview.end
+(); //下拉刷新所在webview回弹
                     self.loading = false;
                     self._setCaption(self.options.down.contentdown, true);
                     setTimeout(function() {

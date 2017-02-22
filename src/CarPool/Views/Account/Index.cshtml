@@ -1,0 +1,25 @@
+﻿@model CarPool.Models.UserVModel
+@{
+    ViewBag.Title = "账户";
+}
+<div class="mui-content">
+    <form id='regist-form' class="mui-input-group" action="@Url.Action("LogOut")" method="post">
+        <div class="mui-input-row">
+            <label>姓名</label>
+            @Html.TextBoxFor(t => t.Name, new { @class = "mui-input", @readonly = "readonly" })
+        </div>
+        <div class="mui-input-row">
+            <label>性别</label>
+            @Html.TextBoxFor(t => t.Sex, new { @class = "mui-input", @readonly = "readonly" })
+        </div>
+        
+        <div class="mui-input-row">
+            <label>联系电话</label>
+            @Html.TextBoxFor(t => t.Phone, new { @class = "mui-input", @readonly = "readonly" })
+        </div>
+        <div class="mui-content-padded">
+            <button class="mui-btn mui-btn-block mui-btn-danger">退出登录</button>
+        </div>
+    </form>
+</div>
+

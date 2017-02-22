@@ -54,7 +54,7 @@ namespace CarPool.Db.Entities
         public string Description { get; set; }
 
         /// <summary>
-        /// 
+        /// 转化为视图模型
         /// </summary>
         /// <returns></returns>
         public MessageVModel ToVModel()
@@ -62,7 +62,7 @@ namespace CarPool.Db.Entities
             return new MessageVModel
             {
                 Id = this.Id,
-                StartTime = this.StartTime,
+                StartTime = this.StartTime.ToString("yyyy年MM月dd日 HH:mm"),
                 Description = this.Description,
                 StartName = this.StartName,
                 EndName = this.EndName,
@@ -70,15 +70,25 @@ namespace CarPool.Db.Entities
                 Contact = this.Contact,
                 Price = this.Price,
                 MessageType = MessageType.GetHashCode(),
-                Phone = this.Phone
+                Phone = this.Phone,
+                Ticks = this.Ticks,
+                IsTop = this.IsTop
             };
         }
     }
 
-
+    /// <summary>
+    /// 消息类型
+    /// </summary>
     public enum MessageType
     {
-        Passenger = 0,
-        CarOwner = 1
+        /// <summary>
+        /// 车主信息 - 找乘客
+        /// </summary>
+        CarOwner = 0,
+        /// <summary>
+        /// 乘客信息 - 找车
+        /// </summary>
+        Passenger = 1
     }
 }

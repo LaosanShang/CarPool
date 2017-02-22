@@ -1,24 +1,24 @@
 ﻿@model CarPool.Models.MessageVModel
 @{
-    ViewBag.Title = "Publish";
+    ViewBag.Title = "发布";
 }
 <link href="~/Content/mui/css/mui.picker.all.css" rel="stylesheet" />
 <script src="~/Content/mui/js/mui.picker.min.js"></script>
 <div class="mui-content">
     <div id="slider" class="mui-slider">
         <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-            <a class="mui-control-item" href="#itemFindPassenger">
+            <a class="mui-control-item" href="#messageOfCarOwner">
                 我要找人
             </a>
-            <a class="mui-control-item" href="#itemFindCar">
+            <a class="mui-control-item" href="#messageOfPassenger">
                 我要找车
             </a>
         </div>
         <div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
         <div class="mui-slider-group">
-            <div id="itemFindPassenger" class="mui-slider-item mui-control-content mui-active">
-                <form id='login-form' class="mui-input-group" action="@Url.Action("PublishMessage")" method="post">
-                    @Html.HiddenFor(t => t.MessageType, new { @value = 1 })
+            <div id="messageOfCarOwner" class="mui-slider-item mui-control-content mui-active">
+                <form id='MsgOfCarOwner-form' class="mui-input-group" action="@Url.Action("PublishMessage")" method="post">
+                    
                     <div class="mui-input-row">
                         <label>起点</label>
                         @Html.TextBoxFor(t => t.StartName, new { @class = "mui-input-clear mui-input", @placeholder = "您从哪出发?" })
@@ -52,13 +52,13 @@
                         @Html.TextAreaFor(t => t.Description, new { @class = "mui-input-clear mui-input", @placeholder = "请输入描述内容" })
                     </div>
                     <div class="mui-content-padded">
-                        <button class="mui-btn mui-btn-block mui-btn-primary">发布</button>
+                        <a id="btnPublishMsgOfCarOwner" class="mui-btn mui-btn-block mui-btn-primary">发布</a>
                     </div>
                 </form>
             </div>
-            <div id="itemFindCar" class="mui-slider-item mui-control-content mui-active">
-                <form class="mui-input-group" action="@Url.Action("PublishMessage")" method="post">
-                    @Html.HiddenFor(t => t.MessageType, new { @value = 1 })
+            <div id="messageOfPassenger" class="mui-slider-item mui-control-content">
+                <form id="MsgOrPassenger-form" class="mui-input-group" action="@Url.Action("PublishMessage")" method="post">
+                    
                     <div class="mui-input-row">
                         <label>起点</label>
                         @Html.TextBoxFor(t => t.StartName, new { @class = "mui-input-clear mui-input", @placeholder = "您从哪出发?" })
@@ -73,7 +73,7 @@
                     </div>
                     <div class="mui-input-row">
                         <label>人数</label>
-                        @Html.TextBoxFor(t => t.SeatCount, new { @class = "mui-input-clear mui-input", @placeholder = "乘坐人数" })
+                        @Html.TextBoxFor(t => t.SeatCount, new { @class = "mui-input-clear mui-input",@type="number", @placeholder = "乘坐人数" })
                     </div>
                     <div class="mui-input-row">
                         <label>联系人</label>
@@ -88,7 +88,7 @@
                         @Html.TextAreaFor(t => t.Description, new { @class = "mui-input-clear mui-input", @placeholder = "请输入描述内容" })
                     </div>
                     <div class="mui-content-padded">
-                        <button class="mui-btn mui-btn-block mui-btn-primary">发布</button>
+                        <a id="btnPublishMsgOfPassenger" class="mui-btn mui-btn-block mui-btn-primary">发布</a>
                     </div>
                 </form>
             </div>
@@ -109,5 +109,43 @@
         page.datePicker.show(function (selectItems) {
             $input.val(selectItems.text);
         })
+    });
+
+    $(document).ready(function () {
+        $("#btnPublishMsgOfCarOwner").click(function () {
+            var data = $("#MsgOfCarOwner-form").serialize();
+            data += "&MessageType=0";
+            var options = {
+                url: '@Url.Action("PublishMessage")',
+                type: 'post',
+                dataType: 'json',
+                data:data,
+                onSuccess: function (data) {
+                    window.location = '@Url.Action("Index","Home")';
+                },
+                onFailure: function (err) {
+                    mui.toast(err);
+                }
+            };
+            $.lsAjax(options);
+        });
+        //乘客发布信息
+        $("#btnPublishMsgOfPassenger").click(function () {
+            var data = $("#MsgOrPassenger-form").serialize();
+            data+="&MessageType=1";
+            var options = {
+                url: '@Url.Action("PublishMessage")',
+                type: 'post',
+                dataType: 'json',
+                data:data,
+                onSuccess: function (data) {
+                    window.location = '@Url.Action("Index","Home")';
+                },
+                onFailure: function (err) {
+                    mui.toast(err);
+                }
+            };
+            $.lsAjax(options);
+        });
     });
 </script>
