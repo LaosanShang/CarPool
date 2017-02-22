@@ -1,0 +1,113 @@
+﻿@model CarPool.Models.MessageVModel
+@{
+    ViewBag.Title = "Publish";
+}
+<link href="~/Content/mui/css/mui.picker.all.css" rel="stylesheet" />
+<script src="~/Content/mui/js/mui.picker.min.js"></script>
+<div class="mui-content">
+    <div id="slider" class="mui-slider">
+        <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+            <a class="mui-control-item" href="#itemFindPassenger">
+                我要找人
+            </a>
+            <a class="mui-control-item" href="#itemFindCar">
+                我要找车
+            </a>
+        </div>
+        <div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
+        <div class="mui-slider-group">
+            <div id="itemFindPassenger" class="mui-slider-item mui-control-content mui-active">
+                <form id='login-form' class="mui-input-group" action="@Url.Action("PublishMessage")" method="post">
+                    @Html.HiddenFor(t => t.MessageType, new { @value = 1 })
+                    <div class="mui-input-row">
+                        <label>起点</label>
+                        @Html.TextBoxFor(t => t.StartName, new { @class = "mui-input-clear mui-input", @placeholder = "您从哪出发?" })
+                    </div>
+                    <div class="mui-input-row">
+                        <label>目的地</label>
+                        @Html.TextBoxFor(t => t.EndName, new { @class = "mui-input-clear mui-input", @placeholder = "您要到哪?"})
+                    </div>
+                    <div class="mui-input-row">
+                        <label>出发时间</label>
+                        @Html.TextBoxFor(t => t.StartTime, new { @class = "mui-input-clear mui-input time-picker", @placeholder = "啥时候出发?", @readonly = "readonly" })
+                    </div>
+                    <div class="mui-input-row">
+                        <label>价格</label>
+                        @Html.TextBoxFor(t => t.Price, new { @class = "mui-input-clear mui-input", @placeholder = "价格" })
+                    </div>
+                    <div class="mui-input-row">
+                        <label>座位</label>
+                        @Html.TextBoxFor(t => t.SeatCount, new { @class = "mui-input-clear mui-input", @placeholder = "空座数" })
+                    </div>
+                    <div class="mui-input-row">
+                        <label>联系人</label>
+                        @Html.TextBoxFor(t => t.Contact, new { @class = "mui-input-clear mui-input", @placeholder = "请输入联系人" })
+                    </div>
+                    <div class="mui-input-row">
+                        <label>联系电话</label>
+                        @Html.TextBoxFor(t => t.Phone, new { @class = "mui-input-clear mui-input", @placeholder = "请输入联系电话" })
+                    </div>
+                    <div class="mui-input-row" style="height:auto;">
+                        <label>描述</label>
+                        @Html.TextAreaFor(t => t.Description, new { @class = "mui-input-clear mui-input", @placeholder = "请输入描述内容" })
+                    </div>
+                    <div class="mui-content-padded">
+                        <button class="mui-btn mui-btn-block mui-btn-primary">发布</button>
+                    </div>
+                </form>
+            </div>
+            <div id="itemFindCar" class="mui-slider-item mui-control-content mui-active">
+                <form class="mui-input-group" action="@Url.Action("PublishMessage")" method="post">
+                    @Html.HiddenFor(t => t.MessageType, new { @value = 1 })
+                    <div class="mui-input-row">
+                        <label>起点</label>
+                        @Html.TextBoxFor(t => t.StartName, new { @class = "mui-input-clear mui-input", @placeholder = "您从哪出发?" })
+                    </div>
+                    <div class="mui-input-row">
+                        <label>目的地</label>
+                        @Html.TextBoxFor(t => t.EndName, new { @class = "mui-input-clear mui-input", @placeholder = "您要到哪?" })
+                    </div>
+                    <div class="mui-input-row">
+                        <label>出发时间</label>
+                        @Html.TextBoxFor(t => t.StartTime, new { @class = "mui-input-clear mui-input time-picker", @placeholder = "啥时候出发?" ,@readonly ="readonly"})
+                    </div>
+                    <div class="mui-input-row">
+                        <label>人数</label>
+                        @Html.TextBoxFor(t => t.SeatCount, new { @class = "mui-input-clear mui-input", @placeholder = "乘坐人数" })
+                    </div>
+                    <div class="mui-input-row">
+                        <label>联系人</label>
+                        @Html.TextBoxFor(t => t.Contact, new { @class = "mui-input-clear mui-input", @placeholder = "请输入联系人" })
+                    </div>
+                    <div class="mui-input-row">
+                        <label>联系电话</label>
+                        @Html.TextBoxFor(t => t.Phone, new { @class = "mui-input-clear mui-input", @placeholder = "请输入联系电话" })
+                    </div>
+                    <div class="mui-input-row" style="height:auto;">
+                        <label>描述</label>
+                        @Html.TextAreaFor(t => t.Description, new { @class = "mui-input-clear mui-input", @placeholder = "请输入描述内容" })
+                    </div>
+                    <div class="mui-content-padded">
+                        <button class="mui-btn mui-btn-block mui-btn-primary">发布</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    var page = {};
+    //时间选择
+    $('.time-picker').focus(function (e) {
+        var $input = $(e.target);
+        if (!page.datePicker) {
+            page.datePicker = new mui.DtPicker();
+        }
+        page.datePicker.show(function (selectItems) {
+            $input.val(selectItems.text);
+        })
+    });
+</script>

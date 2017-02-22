@@ -1,0 +1,28 @@
+﻿@model CarPool.Models.UserVModel
+@{
+    ViewBag.Title = "注册";
+}
+<div class="mui-content">
+    <form id='regist-form' class="mui-input-group" action="@Url.Action("Regist")" method="post">
+        <div class="mui-input-row">
+            <label>姓名</label>
+            @Html.TextBoxFor(t => t.Name, new { @class = "mui-input-clear mui-input", @placeholder = "请输入姓名" })
+        </div>
+        <div class="mui-input-row mui-radio mui-right">
+            <label>男</label>
+            <input name="Sex" type="radio" value="男">
+        </div>
+        <div class="mui-input-row mui-radio mui-right">
+            <label>女</label>
+            <input name="Sex" type="radio" checked value="女">
+        </div>
+        <div class="mui-input-row">
+            <label>联系电话</label>
+            @Html.TextBoxFor(t => t.Phone, new { @class = "mui-input-clear mui-input", @placeholder = "请输入联系电话" })
+        </div>
+        <div class="mui-content-padded">
+            <button class="mui-btn mui-btn-block mui-btn-primary">注册</button>
+        </div>
+    </form>
+</div>
+
