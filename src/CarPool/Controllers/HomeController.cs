@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using EntityFramework.Extensions;
 
 namespace CarPool.Controllers
 {
@@ -21,16 +22,6 @@ namespace CarPool.Controllers
             using (CpDbContext db = new CpDbContext())
             {
                 IndexVModel indexVm = new IndexVModel();
-                db.Messages.AsNoTracking()
-                    .Where(t => t.MessageType == MessageType.Passenger)
-                    .Take(5)
-                    .ToList()
-                    .ForEach(t => indexVm.CarMessages.Add(t.ToVModel()));
-                db.Messages.AsNoTracking()
-                    .Where(t => t.MessageType == MessageType.CarOwner)
-                    .Take(5)
-                    .ToList()
-                    .ForEach(t => indexVm.PassengerMessages.Add(t.ToVModel()));
                 return View(indexVm);
             }
 
@@ -100,14 +91,14 @@ namespace CarPool.Controllers
         /// <param name="rows">行数</param>
         /// <param name="msgType">消息类型</param>
         /// <returns></returns>
-        public ActionResult LoadMessage(int page, int rows, int? msgType)
+        public ActionResult LoadMessage(int page, int rows, int? msgType,string msg)
         {
             using (CpDbContext db = new CpDbContext())
             {
                 List<MessageVModel> msgs = new List<MessageVModel>();
-                db.Messages.AsNoTracking()
-                    .Where(t => t.MessageType == (MessageType)msgType)
-                    .OrderBy(t => t.StartTime)
+                var query = db.Messages.AsNoTracking().Where(t => t.MessageType == (MessageType)msgType).AsQueryable();
+                if (!string.IsNullOrEmpty(msg)) query = query.Where(t=>t.StartName.Contains(msg) || t.EndName.Contains(msg));
+                query.OrderByDescending(t => new { t.IsTop, t.StartTime })
                     .Skip((page - 1) * rows)
                     .Take(rows)
                     .ToList()
@@ -126,8 +117,9 @@ namespace CarPool.Controllers
             Message msg;
             using (CpDbContext db = new CpDbContext())
             {
-                Message message = db.Messages.Where(t => t.Id == id).FirstOrDefault();
-                message.Ticks++;
+                //Message message = db.Messages.Where(t => t.Id == id).FirstOrDefault();
+                //message.Ticks++;
+                db.Messages.Where(t => t.Id == id).Update(t => new Message { Ticks = t.Ticks + 1 });
                 db.SaveChanges();
                 msg = db.Messages.Where(t => t.Id == id).FirstOrDefault();
             }

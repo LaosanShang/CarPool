@@ -1,0 +1,14 @@
+﻿@using CarPool.Models.Admin.MessageManage
+@model QueryConditionDto
+<table>
+    <tr>
+        <td>@Html.LabelFor(t => t.StartName)</td>
+        <td>@Html.TextBoxFor(t => t.StartName, new { @class = "easyui-textbox", @placeholder = "起点" })</td>
+        <td>@Html.LabelFor(t => t.StartTime)</td>
+        <td>@Html.TextBoxFor(t => t.StartTime, new { @class = "easyui-datebox", @placeholder = "出发开始时间" })</td>
+        <td>@Html.LabelFor(t => t.EndTime)</td>
+        <td>@Html.TextBoxFor(t => t.EndTime, new { @class = "easyui-datebox", @placeholder = "出发结束时间" })</td>
+        <td>@Html.LabelFor(t => t.MessageType)</td>
+        <td>@Html.TextBoxFor(t => t.MessageType, new { @class = "easyui-combobox", @placeholder = "出发结束时间",@id= "combo-msgType" })</td>
+    </tr>
+</table>

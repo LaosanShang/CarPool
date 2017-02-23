@@ -1,16 +1,37 @@
 ﻿@model List<CarPool.Models.MessageVModel>
 @foreach (var msg in Model)
 {
-    <li class="mui-table-view-cell" msgId ="@msg.Id">
-        <a class="mui-navigate-right">
-            <p class="route">@msg.StartName - @msg.EndName 
-            @if(!msg.IsTop)
-            {
-                <span style="color:#E3170D;font-size:0.8em;float:none;line-height:1.3em;">[顶]</span>
-            }
-            </p>
-            <span class="price">￥@msg.Price</span>
-            <span>出发时间：@msg.StartTime</span>
-            <span class="mui-badge mui-badge-primary">@msg.Ticks 阅</span></a>
-    </li>
+    if (msg.MessageType == 0)
+    {
+        <li class="mui-table-view-cell" msgId="@msg.Id">
+            <a class="mui-navigate-right">
+                <p class="route">
+                    @msg.StartName - @msg.EndName
+                    @if (msg.IsTop)
+                    {
+                        <span style="color:#E3170D;font-size:0.8em;float:none;line-height:1.3em;">[顶]</span>
+                    }
+                </p>
+                <span class="price">￥@msg.Price</span>
+                <span>出发时间：@msg.StartTime</span>
+                <span class="mui-badge mui-badge-primary">@msg.Ticks 阅</span>
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="mui-table-view-cell" msgId="@msg.Id">
+            <a class="mui-navigate-right">
+                <p class="route">
+                    @msg.StartName - @msg.EndName
+                    @if (msg.IsTop)
+                    {
+                        <span style="color:#E3170D;font-size:0.8em;float:none;line-height:1.3em;">[顶]</span>
+                    }
+                </p>
+                <span>出发时间：@msg.StartTime</span>
+                <span class="mui-badge mui-badge-primary">@msg.Ticks 阅</span>
+            </a>
+        </li>
+    }
 }

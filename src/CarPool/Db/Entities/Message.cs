@@ -8,6 +8,7 @@ namespace CarPool.Db.Entities
 {
     public class Message : BaseEntity
     {
+        private DateTime? _publishTime;
         /// <summary>
         /// 是否置顶
         /// </summary>
@@ -53,6 +54,20 @@ namespace CarPool.Db.Entities
         /// </summary>
         public string Description { get; set; }
 
+        public DateTime? PublishTime
+        {
+            get
+            {
+                if (_publishTime == null) _publishTime = DateTime.Now;
+                return _publishTime;
+            }
+
+            set
+            {
+                _publishTime = value;
+            }
+        }
+
         /// <summary>
         /// 转化为视图模型
         /// </summary>
@@ -62,7 +77,7 @@ namespace CarPool.Db.Entities
             return new MessageVModel
             {
                 Id = this.Id,
-                StartTime = this.StartTime.ToString("yyyy年MM月dd日 HH:mm"),
+                StartTime = this.StartTime.ToString("yyyy-MM-dd HH:mm"),
                 Description = this.Description,
                 StartName = this.StartName,
                 EndName = this.EndName,
@@ -72,7 +87,8 @@ namespace CarPool.Db.Entities
                 MessageType = MessageType.GetHashCode(),
                 Phone = this.Phone,
                 Ticks = this.Ticks,
-                IsTop = this.IsTop
+                IsTop = this.IsTop,
+                PublishTime = this.PublishTime.Value.ToString("yyyy-MM-dd HH:mm"),
             };
         }
     }

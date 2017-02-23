@@ -78,7 +78,7 @@
 <!--搜索框-->
 <div class="mui-content-padded" style="margin-top: 5px;margin-bottom:-15px;">
     <div class="mui-input-row mui-search">
-        <input type="search" class="mui-input-clear" placeholder="搜索拼车">
+        <input id="search" type="search" class="mui-input-clear" placeholder="搜索拼车" readonly>
     </div>
 </div>
 <!--列表-->
@@ -124,7 +124,8 @@
             pagerOfPassengerList: {
                 pageNo: 1,//页数
                 rows: 5,//每页行数
-            }
+            },
+            search:''
         };
         //滚动条
         mui('.mui-scroll-wrapper').scroll({
@@ -145,7 +146,7 @@
                     $.ajax({
                         type: 'post',
                         url: '@Url.Action("LoadMessage")',
-                        data: { page: page.pagerOfCarOwnerList.pageNo, rows: page.pagerOfCarOwnerList.rows, msgType: 0 },
+                        data: { page: page.pagerOfCarOwnerList.pageNo, rows: page.pagerOfCarOwnerList.rows, msgType: 0, msg: page.search },
                         success: function (data) {
                             $('#msgCarOwner').append(data);
                             page.pagerOfCarOwnerList.pageNo++;
@@ -170,7 +171,7 @@
                     $.ajax({
                         type: 'post',
                         url: '@Url.Action("LoadMessage")',
-                        data: { page: page.pagerOfPassengerList.pageNo, rows: page.pagerOfPassengerList.rows, msgType: 1 },
+                        data: { page: page.pagerOfPassengerList.pageNo, rows: page.pagerOfPassengerList.rows, msgType: 1, msg: page.search },
                         success: function (data) {
                             $('#msgOfPassenger').append(data);
                             page.pagerOfPassengerList.pageNo++;
@@ -190,6 +191,39 @@
             var id = this.getAttribute("msgId");
             window.location = '@Url.Action("MessageDetail","Home")' + '?id=' + id;
         })
+
+        function reload(msg){
+            page.pagerOfPassengerList.pageNo = 1;
+            page.pagerOfCarOwnerList.pageNo = 1;
+            page.search = msg;
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("LoadMessage")',
+                data: { page: page.pagerOfCarOwnerList.pageNo, rows: page.pagerOfCarOwnerList.rows, msgType: 0,msg:page.search },
+                success: function (data) {
+                    $('#msgCarOwner').html(data);
+                    page.pagerOfCarOwnerList.pageNo++;
+                    mui('#scroll_MsgOfCarOwner').pullRefresh().refresh(true);
+                }
+            });
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("LoadMessage")',
+                data: { page: page.pagerOfPassengerList.pageNo, rows: page.pagerOfPassengerList.rows, msgType: 1,msg:page.search },
+                success: function (data) {
+                    $('#msgOfPassenger').html(data);
+                    page.pagerOfPassengerList.pageNo++;
+                    mui('#scroll_MsgOfPassenger').pullRefresh().refresh(true);
+                }
+            });
+        }
+
+        $("#search").click( function () {
+            mui.prompt("请输入起点或者终点", "起点或终点", "搜索", ['确认', '取消'], function (e) {
+                e.index == 0 && reload(e.value);
+                })
+        });
     })(mui, $);
 
 </script>

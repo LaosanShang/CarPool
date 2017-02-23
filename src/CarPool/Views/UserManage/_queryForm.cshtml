@@ -1,0 +1,10 @@
+﻿@using CarPool.Models.Admin.UserManage
+@model QueryConditionDto
+<table>
+    <tr>
+        <td>@Html.LabelFor(t => t.UserName)</td>
+        <td>@Html.TextBoxFor(t => t.UserName, new { @class = "easyui-textbox", @placeholder = "用户名" })</td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>

@@ -48,7 +48,7 @@ namespace CarPool.Models
         /// 座位数
         /// </summary>
         [Required(ErrorMessage = "请输入座位数")]
-        [RegularExpression("^[1-9][0-9]$", ErrorMessage = "您输入的座位数格式不正确!")]
+        [Range(0,99, ErrorMessage = "您输入的座位数格式不正确!")]
         public int SeatCount { get; set; }
         /// <summary>
         /// 联系人
@@ -66,5 +66,9 @@ namespace CarPool.Models
         /// </summary>
         [MaxLength(300,ErrorMessage = "描述最多只能输入300个字符！")]
         public string Description { get; set; }
+        /// <summary>
+        /// 发布时间
+        /// </summary>
+        public string PublishTime { get; set; }
     }
 }

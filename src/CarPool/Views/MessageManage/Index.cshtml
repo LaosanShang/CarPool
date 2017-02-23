@@ -1,0 +1,120 @@
+﻿@using CarPool.Models.Admin.MessageManage
+@model PageDto
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutNormalFuncPage.cshtml";
+}
+@section head{
+    <script type="text/javascript">
+        var $lsGrid = {};
+        $(document).ready(function () {
+            $lsGrid = $("#grid").lsGrid({
+                url: '@Url.Action("Query", "MessageManage")',
+                title: "发布信息",
+                fit: true,
+                columns: [[
+                    { title: '起点', field: 'StartName', width: 100, sortable: true, align: 'center' },
+                    { title: '目的地', field: 'EndName', width: 100, sortable: true, align: 'center' },
+                    {
+                        title: '消息类型', field: 'MessageType', width: 80, sortable: true,align:'center', formatter: function (val) {
+                            return val == 0 ? "车主" : "乘客";
+                        }
+                    },
+                    {
+                        title: '是否置顶', field: 'IsTop', width: 80, sortable: true, formatter: function (val) {
+                            return val ? "是" : "否";
+                        }, align: 'center'
+                    },
+                    { title: '出发时间', field: 'StartTime', width: 150, sortable: true, align: 'center' },
+                    { title: '价格', field: 'Price', width: 50, sortable: true, align: 'center' },
+                    { title: '人数/空座数', field: 'SeatCount', width: 50, sortable: true, align: 'center' },
+                    { title: '联系电话', field: 'Phone', width: 150, sortable: true, align: 'center' ,align:'center'},
+                    { title: '发布时间', field: 'PublishTime', width: 150, sortable: true, align: 'center' },
+                    { title: '描述', field: 'Description', width: 350, sortable: true },
+
+                ]]
+            });
+            page.init();
+        });
+
+        $.extend(page, {
+            init: function () {
+                $lsGrid.reload();
+                $("#combo-msgType").lsCombobox({ data: [{ text: "车主", id: '0' }, { text: "乘客", id: '1' }] });
+            },
+            query: function () {
+                $lsGrid.reload();
+            },
+            add: function () {
+                $.ls.showDialog({
+                    title: '新增用户',
+                    url: '@Url.Action("UserEdit")',
+                    width: 400,
+                    height: 250,
+                    onClose: function (result) {
+                        if (result) {
+                            $.ls.success($.ls.messages.SuccessAdded);
+                            $lsGrid.reload();
+                        }
+                    }
+                });
+            },
+            modify: function () {
+                var row = $lsGrid.getSelectedRow();
+                if ($.ls.isNullOrEmpty(row)) return;
+                $.ls.showDialog({
+                    title: '修改用户',
+                    url: '@Url.Action("UserEdit")' + "?id=" + row.Id,
+                    width: 400,
+                    height: 250,
+                    onClose: function (result) {
+                        if (result) {
+                            $.ls.success($.ls.messages.SuccessModified);
+                            $lsGrid.reload();
+                        }
+                    }
+                });
+            },
+            remove: function () {
+                var row = $lsGrid.getSelectedRow();
+                if ($.ls.isNullOrEmpty(row)) return;
+                $.ls.confirm('确定删除?', function (result) {
+                    if (result) {
+                        $.ls.ajax({
+                            url: '@Url.Action("Remove")' + '?id=' + row.Id,
+                            onSuccess: function (data) {
+                                $.ls.success($.ls.messages.SuccessDeleted);
+                                $lsGrid.reload();
+                            }
+                        });
+                    }
+                })
+            },
+            top: function () {
+                var row = $lsGrid.getSelectedRow();
+                if ($.ls.isNullOrEmpty(row)) return;
+                $.ls.confirm('确定置顶?', function (result) {
+                    if (result) {
+                        $.ls.ajax({
+                            url: '@Url.Action("Top")' + '?id=' + row.Id,
+                            onSuccess: function (data) {
+                                $.ls.success($.ls.messages.SuccessOperation);
+                                $lsGrid.reload();
+                            }
+                        });
+                    }
+                })
+            }
+        });
+    </script>
+}
+@section btncontainer{
+    <button onclick="page.query()" class="btn btn-primary">查询</button>
+    <button onclick="page.top()" class="btn btn-primary">置顶</button>
+}
+@section queryform{
+    @Html.Partial("_queryForm", Model.QueryForm)
+}
+<table id="grid"></table>
+
+
