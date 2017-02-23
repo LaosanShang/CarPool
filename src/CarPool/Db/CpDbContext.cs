@@ -16,7 +16,9 @@ namespace CarPool.Db
         }
         #region Tables
         public DbSet<User> Users { get; set; }
-        public DbSet<Message> Messages { get; set; } 
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Manager> Managers { get; set; }
+        public DbSet<Advert> Adverts { get; set; }
         #endregion
     }
 }

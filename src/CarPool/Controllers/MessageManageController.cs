@@ -12,6 +12,7 @@ using EntityFramework.Extensions;
 
 namespace CarPool.Controllers
 {
+    [AllowAnonymous]
     public class MessageManageController : BaseController
     {
         public ActionResult Index()

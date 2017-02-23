@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using EntityFramework.Extensions;
+using CarPool.Models.Admin.AdvertManage;
 
 namespace CarPool.Controllers
 {
@@ -22,6 +23,7 @@ namespace CarPool.Controllers
             using (CpDbContext db = new CpDbContext())
             {
                 IndexVModel indexVm = new IndexVModel();
+                db.Adverts.AsNoTracking().AsQueryable().ToList().ForEach(t => indexVm.Adverts.Add(new AdvertDto { Id = t.Id, Description = t.Description, ImageUrl = t.ImageUrl, Title = t.Title }));
                 return View(indexVm);
             }
 
@@ -117,8 +119,6 @@ namespace CarPool.Controllers
             Message msg;
             using (CpDbContext db = new CpDbContext())
             {
-                //Message message = db.Messages.Where(t => t.Id == id).FirstOrDefault();
-                //message.Ticks++;
                 db.Messages.Where(t => t.Id == id).Update(t => new Message { Ticks = t.Ticks + 1 });
                 db.SaveChanges();
                 msg = db.Messages.Where(t => t.Id == id).FirstOrDefault();

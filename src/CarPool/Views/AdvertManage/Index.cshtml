@@ -1,0 +1,94 @@
+﻿@using CarPool.Models.Admin.AdvertManage
+@model PageDto
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutNormalFuncPage.cshtml";
+}
+@section head{
+    <script type="text/javascript">
+        var $lsGrid = {};
+        $(document).ready(function () {
+            $lsGrid = $("#grid").lsGrid({
+                url: '@Url.Action("Query", "AdvertManage")',
+                title: "广告信息",
+                fit: true,
+                columns: [[
+                    { title: '标题', field: 'Title', width: 150, sortable: true },
+                    {
+                        title: '图片', field: 'ImageUrl', width: 150, formatter: function (val) {
+                            return '<img height="100" src=' + val + ' />'
+                        }
+                    },
+                    { title: '描述', field: 'Description', width: 150, sortable: true }
+                ]]
+            });
+            page.init();
+        });
+
+        $.extend(page, {
+            init: function () {
+                $lsGrid.reload();
+            },
+            query: function () {
+                $lsGrid.reload();
+            },
+            add: function () {
+                $.ls.showDialog({
+                    title: '新增广告',
+                    url: '@Url.Action("AdvertEdit")',
+                    width: 400,
+                    height: 250,
+                    onClose: function (result) {
+                        if (result) {
+                            $.ls.success($.ls.messages.SuccessAdded);
+                            $lsGrid.reload();
+                        }
+                    }
+                });
+            },
+            modify: function () {
+                var row = $lsGrid.getSelectedRow();
+                if ($.ls.isNullOrEmpty(row)) return;
+                $.ls.showDialog({
+                    title: '修改广告',
+                    url: '@Url.Action("AdvertEdit")' + "?id=" + row.Id,
+                    width: 400,
+                    height: 250,
+                    onClose: function (result) {
+                        if (result) {
+                            $.ls.success($.ls.messages.SuccessModified);
+                            $lsGrid.reload();
+                        }
+                    }
+                });
+            },
+            remove: function () {
+                var row = $lsGrid.getSelectedRow();
+                if ($.ls.isNullOrEmpty(row)) return;
+                $.ls.confirm('确定删除?', function (result) {
+                    if (result) {
+                        $.ls.ajax({
+                            url: '@Url.Action("Remove")' + '?id=' + row.Id,
+                            onSuccess: function (data) {
+                                $.ls.success($.ls.messages.SuccessDeleted);
+                                $lsGrid.reload();
+                            }
+                        });
+                    }
+                })
+            }
+        });
+    </script>
+}
+@section btncontainer{
+    <button onclick="page.query()" class="btn btn-primary">查询</button>
+    <button onclick="page.add()" class="btn btn-primary">新增</button>
+    <button onclick="page.modify()" class="btn btn-primary">修改</button>
+    <button onclick="page.remove()" class="btn btn-primary">删除</button>
+}
+@section queryform{
+    @Html.Partial("_queryForm", Model.QueryForm)
+}
+<table id="grid"></table>
+
+

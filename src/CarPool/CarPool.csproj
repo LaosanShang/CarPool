@@ -239,13 +239,18 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageManageController.cs" />
+    <Compile Include="Controllers\AdvertManageController.cs" />
     <Compile Include="Controllers\UserManageController.cs" />
     <Compile Include="Db\CpDbContext.cs" />
+    <Compile Include="Db\Entities\Advert.cs" />
     <Compile Include="Db\Entities\BaseEntity.cs" />
+    <Compile Include="Db\Entities\Manager.cs" />
     <Compile Include="Db\Entities\Message.cs" />
     <Compile Include="Db\Entities\User.cs" />
     <Compile Include="Db\Mapping\BaseEntityTypeConfiguration.cs" />
     <Compile Include="Db\Mapping\MessageMap.cs" />
+    <Compile Include="Db\Mapping\ManagerMap.cs" />
+    <Compile Include="Db\Mapping\AdvertMap.cs" />
     <Compile Include="Db\Mapping\UserMap.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -258,10 +263,17 @@
     <Compile Include="Migrations\201702230526027__addPublishTime.Designer.cs">
       <DependentUpon>201702230526027__addPublishTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702230829443__addTableMA.cs" />
+    <Compile Include="Migrations\201702230829443__addTableMA.Designer.cs">
+      <DependentUpon>201702230829443__addTableMA.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin\LoginVModel.cs" />
     <Compile Include="Models\Admin\MessageManage\PageDto.cs" />
     <Compile Include="Models\Admin\MessageManage\QueryConditionDto.cs" />
+    <Compile Include="Models\Admin\AdvertManage\PageDto.cs" />
+    <Compile Include="Models\Admin\AdvertManage\QueryConditionDto.cs" />
+    <Compile Include="Models\Admin\AdvertManage\AdvertDto.cs" />
     <Compile Include="Models\Admin\UserManage\PageDto.cs" />
     <Compile Include="Models\Admin\UserManage\QueryConditionDto.cs" />
     <Compile Include="Models\Admin\UserManage\UserDto.cs" />
@@ -307,6 +319,9 @@
     <Content Include="Views\UserManage\_queryForm.cshtml" />
     <Content Include="Views\MessageManage\_queryForm.cshtml" />
     <Content Include="Views\MessageManage\Index.cshtml" />
+    <Content Include="Views\AdvertManage\_queryForm.cshtml" />
+    <Content Include="Views\AdvertManage\Index.cshtml" />
+    <Content Include="Views\AdvertManage\_editForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -320,6 +335,7 @@
     <Folder Include="Content\easyui\" />
     <Folder Include="Content\font-awesome\" />
     <Folder Include="Content\Images\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201702151406012_InitialCreate.resx">
@@ -327,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702230526027__addPublishTime.resx">
       <DependentUpon>201702230526027__addPublishTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702230829443__addTableMA.resx">
+      <DependentUpon>201702230829443__addTableMA.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

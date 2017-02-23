@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutDialogPage.cshtml";
+}
+@using CarPool.Models.Admin.AdvertManage
+@model AdvertDto
+@section script{
+    <script type="text/javascript">
+        var dialog = top.dialog.get(window);
+        var dialogObj = {
+            Ok: function () {
+                //获取form数据
+                var formData = new FormData($("#formEdit")[0]);
+                //调用apicontroller后台action方法，将form数据传递给后台处理。contentType必须设置为false,否则chrome和firefox不兼容
+                $.ls.ajax({
+                    url: '@Url.Action("Add")',
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    onSuccess: function (data) {
+                        dialog.Close(true);
+                    }
+                });
+                
+            },
+            Cancel: function () {
+                dialog.Close(false); 
+            }
+        };
+
+        $(document).ready(function () {
+            $("#file").filebox({
+                buttonText: '选择文件',
+                buttonAlign: 'right'
+            })
+        });
+    </script>
+}
+<div class="container">
+    <form id="formEdit" class="form-horizontal">
+        @Html.HiddenFor(x => x.Id,new {@id = "hidId"})
+        <table>
+            <tr>
+                <td>@Html.LabelFor(x => x.Title)</td>
+                <td>@Html.TextBoxFor(x => x.Title, new { @class = "easyui-textbox" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.ImageUrl)</td>
+                <td>@Html.TextBoxFor(x => x.ImageUrl, new { @class = "easyui-filebox" ,@id="file"})</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(x => x.Description)</td>
+                <td>@Html.TextAreaFor(x => x.Description, new { @class = "textarea" })</td>
+            </tr>
+        </table>
+    </form>
+</div>
+@section buttons{
+    <button class="btn btn-primary" onclick="dialogObj.Ok()">确认</button>
+    <button class="btn btn-primary" onclick="dialogObj.Cancel()">取消</button>
+}

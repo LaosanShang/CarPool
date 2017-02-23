@@ -11,6 +11,7 @@ namespace CarPool.Models
         {
             CarMessages = new List<MessageVModel>();
             PassengerMessages = new List<MessageVModel>();
+            Adverts = new List<Admin.AdvertManage.AdvertDto>();
         }
         /// <summary>
         /// 消息列表 - 找车
@@ -20,5 +21,7 @@ namespace CarPool.Models
         /// 消息列表 - 找人
         /// </summary>
         public List<MessageVModel> PassengerMessages { get; set; }
+
+        public List<Admin.AdvertManage.AdvertDto> Adverts { get; set; }
     }
 }

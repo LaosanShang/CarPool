@@ -9,6 +9,7 @@ using CarPool.Common;
 
 namespace CarPool.Controllers
 {
+    [AllowAnonymous]
     public class UserManageController : BaseController
     {
         public ActionResult Index()
